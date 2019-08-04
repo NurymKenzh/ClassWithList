@@ -1,0 +1,90 @@
+﻿@model ClassWithList.Models.Apartment
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Apartment</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Number, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Number, new { htmlAttributes = new { @class = "form-control" } })*@
+                <input type="number" value="@Model.Number" name="Model.Number" class = "form-control">
+                @Html.ValidationMessage("Model.Number", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Rooms, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p>
+                    <input type="submit" value="Add room" name="action:CreateAddRoom" class = "form-control">
+                </p>
+                <table class="table">
+                    @foreach(var item in Model.Rooms)
+                    {
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(modelItem => item.Type)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(modelItem => item.Area)
+                            </th>
+                        </tr>
+                        break;
+                    }
+                    @for(int i = 0; i< Model.Rooms.Count; i++)
+                    {
+                        string RoomId = "Room" + i.ToString();
+                        <tr>
+                            <td>
+                                <input type="text" value="@Model.Rooms[i].Type" name="Model.Rooms[@i].Type" class="form-control" />
+                                @Html.ValidationMessage("Model.Rooms[" + i.ToString() + "].Type", "", new { @class = "text-danger"})
+                            </td>
+                            <td>
+                                <input type="number" value="@Model.Rooms[i].Area" name="Model.Rooms[@i].Area" class="form-control" />
+                                @Html.ValidationMessage("Model.Rooms[" + i.ToString() + "].Area", "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+                                <input id="@RoomId" type="hidden" value="" name="RemoveRoom" />
+                                <input type="submit" value="Remove room" name="action:CreateRemoveRoom" onclick="removeRoom(@i);" class="btn btn-default" />
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" name="action:Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function removeRoom(i) {
+            var controlToRemove = "#Room" + i;
+            $(controlToRemove).val(i);
+        }
+    </script>
+}

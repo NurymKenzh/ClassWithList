@@ -1,0 +1,42 @@
+﻿@model ClassWithList.Models.Apartment
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Apartment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rooms)
+        </dt>
+
+        <dd>
+            @if(Model.Rooms != null)
+            {
+                for(int i=0;i<Model.Rooms.Count;i++)
+                {
+                    @(Model.Rooms[i].Type + "(" + Model.Rooms[i].Area.ToString() + ")")
+                    <br />
+                }
+            }
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
